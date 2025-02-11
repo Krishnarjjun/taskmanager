@@ -1,17 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Task List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+        .container {
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f2f2f2;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-details {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        p {
+            text-align: center;
+            color: #666;
+        }
+        .delete-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .delete-container form {
+            display: inline-block;
+        }
+        .delete-container button {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-container button:hover {
+            background-color: #cc0000;
+        }
+        .delete-container a {
+            margin-left: 15px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .delete-container a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Delete Task</h1>
-<p>Are you sure you want to delete "{{ task.title }}"?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirm Delete</button>
-    <a href="{% url 'task_list' %}">Cancel</a>
-</form>
+    <div class="container">
+        <h1>Task List</h1>
+        <p><a href="{% url 'task_create' %}">Create New Task</a></p>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <div class="task-details">
+                        <strong>{{ task.title }}</strong> - {{ task.description }}
+                    </div>
+                    <div class="actions">
+                        <a href="{% url 'task_update' task.id %}">Edit</a> | 
+                        <a href="{% url 'task_delete' task.id %}">Delete</a>
+                    </div>
+                </li>
+            {% empty %}
+                <p>No tasks available</p>
+            {% endfor %}
+        </ul>
+        
+        <div class="delete-container">
+            <h1>Delete Task</h1>
+            <p>Are you sure you want to delete "{{ task.title }}"?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit">Confirm Delete</button>
+                <a href="{% url 'task_list' %}">Cancel</a>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
