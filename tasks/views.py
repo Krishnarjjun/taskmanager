@@ -10,6 +10,13 @@ def home(request):
     if request.method == 'POST':
         return redirect('task_list')
     return render(request, 'tasks/home.html')
+#view for products
+def products(request):
+    if request.method == 'POST':
+        return redirect('task_list')
+    return render(request, 'tasks/products.html')
+
+
 # Create a new task
 def task_create(request):
     if request.method == 'POST':
