@@ -5,7 +5,11 @@ from .models import Task
 def task_list(request):
     tasks = Task.objects.all()
     return render(request, 'tasks/task_list.html', {'tasks': tasks})
-
+# home view
+def home(request):
+    if request.method == 'POST':
+        return redirect('task_list')
+    return render(request, 'tasks/home.html')
 # Create a new task
 def task_create(request):
     if request.method == 'POST':
@@ -30,3 +34,11 @@ def task_delete(request, task_id):
         task.delete()
         return redirect('task_list')
     return render(request, 'tasks/task_confirm_delete.html', {'task': task})
+#user login details
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if username == 'admin' and password == 'admin':
+            return redirect('home')
+    return render(request, 'tasks/login.html')
